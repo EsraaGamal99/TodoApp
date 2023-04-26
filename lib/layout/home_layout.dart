@@ -162,7 +162,7 @@ class HomeLayout extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
           currentIndex: cubit.currentIndex,
           onTap: (index) {
-          cubit.currentIndex = index;
+          cubit.changeIndex(index);
           print(cubit.currentIndex);
           },
           items: [
@@ -183,9 +183,5 @@ class HomeLayout extends StatelessWidget {
           },
       ),
     );
-  }
-
-
-  void deleteFromDataBase() {}
-}
+  }}
 

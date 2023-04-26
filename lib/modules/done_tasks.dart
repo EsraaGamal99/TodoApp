@@ -1,3 +1,4 @@
+import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +8,6 @@ import '../shared/cubit/cubit.dart';
 import '../shared/cubit/states.dart';
 
 class DoneTasks extends StatelessWidget {
-  const DoneTasks({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +15,8 @@ class DoneTasks extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var tasks = AppCubit.get(context).doneTasks;
-        return ListView.separated(
-
-          itemBuilder: (context, index) => buildTaskItem(tasks[index], context),
-          separatorBuilder: (context, index) => Container(
-            width: double.infinity,
-            color: Colors.blueGrey[100],
-            height: 1.0,
-          ),
-          itemCount: tasks.length,
+        return tasksBuilder(
+          tasks: tasks,
         );
       },);
   }

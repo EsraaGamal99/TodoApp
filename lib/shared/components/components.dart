@@ -1,3 +1,4 @@
+import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/shared/cubit/cubit.dart';
 
@@ -62,62 +63,103 @@ Widget defaultTextFormField({
         ),
     );
 
-Widget buildTaskItem(Map model , context)=> Padding(
+Widget buildTaskItem(Map model , context)=>
+    Dismissible(
+      key: UniqueKey(),
+      onDismissed: (direction) {
+        AppCubit.get(context).deleteData(id: model['id'],);
+      },
+      child: Padding(
   padding: const EdgeInsets.all(20.0),
   child: Row(
-    children: [
-      CircleAvatar(
-        radius: 40.0,
-        child: Text(
-          '${model['time']}',
+      children: [
+        CircleAvatar(
+          radius: 40.0,
+          child: Text(
+            '${model['time']}',
+          ),
         ),
-      ),
-      SizedBox(
-        width: 15.0,
-      ),
-      Expanded(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '${model['name']}',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-              ),
-            ),
-
-            Text(
-              '${model['date']}',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 20.0,
-              ),
-            ),
-          ],
+        SizedBox(
+          width: 15.0,
         ),
-      ),
-      SizedBox(
-        width: 15.0,
-      ),
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${model['name']}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+              ),
 
-      IconButton(onPressed: (){
-        AppCubit.get(context).updateData(status: 'done', id: model['id'],);
-      }, icon: Icon(
-        Icons.check_circle,
-        color: Colors.teal,
+              Text(
+                '${model['date']}',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 20.0,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          width: 15.0,
+        ),
 
-      )
-      ),
-      IconButton(onPressed: (){
-        AppCubit.get(context).updateData(status: 'archived', id: model['id'],);
-      }, icon: Icon(
-        Icons.archive_outlined,
-        color: Colors.blueGrey,
-      )
-      ),
+        IconButton(onPressed: (){
+          AppCubit.get(context).updateData(status: 'done', id: model['id'],);},
+            icon: Icon(
+          Icons.check_circle,
+          color: Colors.teal,
 
-    ],
+        )
+        ),
+        IconButton(onPressed: (){
+          AppCubit.get(context).updateData(status: 'archived', id: model['id'],);},
+            icon: Icon(
+          Icons.archive_outlined,
+          color: Colors.blueGrey,
+        )
+        ),
+
+      ],
+  ),
+),
+    );
+
+Widget tasksBuilder(
+{
+  @required List<Map> tasks,
+}
+    ) => ConditionalBuilder(
+  condition: tasks.length > 0,
+  builder:(context) => ListView.separated(
+
+    itemBuilder: (context, index) => buildTaskItem(tasks[index], context),
+    separatorBuilder: (context, index) => Container(
+      width: double.infinity,
+      color: Colors.blueGrey[100],
+      height: 1.0,
+    ),
+    itemCount: tasks.length,
+  ),
+  fallback: (context) => Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.menu,
+          size: 100.0,
+          color: Colors.grey,),
+        Text('No Tasks Yet, Please add Some Tasks',
+          style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),)
+      ],
+    ),
   ),
 );

@@ -64,17 +64,16 @@ class AppCubit extends Cubit<AppStates>{
     });
   }
 
-  Future insertToDataBase(
+   insertToDataBase(
       {
         @required String title,
         @required String time,
         @required String date,
 
       }) async {
-    return await database.transaction(
+    await database.transaction(
           (txn) {
-        txn
-            .rawInsert(
+        txn.rawInsert(
             'INSERT INTO Tasks (name,date,time,status) VALUES ("$title","$date","$time","New")')
             .then((value) {
           print(' $value Insert Successfully');
@@ -90,15 +89,18 @@ class AppCubit extends Cubit<AppStates>{
   }
 
   void getDataFromDatabase(database) {
+    newTasks=[];
+    doneTasks=[];
+    doneTasks=[];
 
     emit(AppGetDatabaseLoadingState());
 
      database.rawQuery('SELECT * FROM Tasks').then((value) {
 
        value.forEach((element){
-         if (element['status']=='new')
+         if (element['status']=='New')
               newTasks.add(element);
-         else if (element['statue'] == 'done')
+         else if (element['status'] == 'done')
               doneTasks.add(element);
          else
            archivedTasks.add(element);
@@ -120,8 +122,9 @@ class AppCubit extends Cubit<AppStates>{
   void deleteData({
     @required int id,
   }) async{
-    database.rawDelete('DELETE FROM Tasks WHERE id = ?', ['$id']).then((value) {
+    database.rawDelete('DELETE FROM Tasks WHERE id = ?', [id]).then((value) {
 
+      getDataFromDatabase(database);
       emit(AppDeleteDataFromDatabaseState());
     });
 
@@ -133,8 +136,10 @@ class AppCubit extends Cubit<AppStates>{
     @required int id,
 }) async {
      database.rawUpdate(
-        'UPDATE Tasks SET status = ?, id = ? WHERE id = ?',
-        ['$status', '$id']).then((value) {
+        'UPDATE Tasks SET status = ? WHERE id = ?',
+        [ '$status','$id'],).then((value)
+     {
+       getDataFromDatabase(database);
        emit(AppUpdateDataToDatabaseState());
      }
 
