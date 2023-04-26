@@ -65,10 +65,7 @@ Widget defaultTextFormField({
 
 Widget buildTaskItem(Map model , context)=>
     Dismissible(
-      key: UniqueKey(),
-      onDismissed: (direction) {
-        AppCubit.get(context).deleteData(id: model['id'],);
-      },
+     // key: UniqueKey(),
       child: Padding(
   padding: const EdgeInsets.all(20.0),
   child: Row(
@@ -128,6 +125,10 @@ Widget buildTaskItem(Map model , context)=>
       ],
   ),
 ),
+
+      onDismissed: (direction ) {
+        AppCubit.get(context).deleteData(id: model['id'],);
+      }, key: Key(model['id'].toString(),),
     );
 
 Widget tasksBuilder(

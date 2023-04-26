@@ -91,7 +91,7 @@ class AppCubit extends Cubit<AppStates>{
   void getDataFromDatabase(database) {
     newTasks=[];
     doneTasks=[];
-    doneTasks=[];
+    archivedTasks=[];
 
     emit(AppGetDatabaseLoadingState());
 
