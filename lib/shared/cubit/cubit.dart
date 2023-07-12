@@ -7,6 +7,7 @@ import 'package:todo_app/shared/cubit/states.dart';
 import '../../modules/archived_tasks.dart';
 import '../../modules/done_tasks.dart';
 import '../../modules/new_tasks.dart';
+import 'package:todo_app/network/local/cach_helper.dart';
 
 class AppCubit extends Cubit<AppStates>{
   AppCubit() : super(AppInitialState());
@@ -144,7 +145,21 @@ class AppCubit extends Cubit<AppStates>{
      }
 
      );
+  }
 
+  bool isDark = false;
 
+  changeThemeMode({
+    bool modeFromShared,
+  }) {
+    if (modeFromShared != null) {
+      isDark = modeFromShared;
+      emit(AppChangeMode());
+    } else {
+      isDark = !isDark;
+      CacheHelper.putBoolean(key: 'isDark', value: isDark).then((value) {
+        emit(AppChangeMode());
+      });
+    }
   }
 }

@@ -2,6 +2,8 @@ abstract class AppStates{}
 
 class AppInitialState extends AppStates{}
 
+class AppChangeMode extends AppStates{}
+
 class AppChangeBottomNavBarState extends AppStates{}
 
 class AppCrateDatabaseState extends AppStates{}
