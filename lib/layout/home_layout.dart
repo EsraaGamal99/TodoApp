@@ -84,7 +84,7 @@ class HomeLayout extends StatelessWidget {
                             controller: titleController,
                             validate: (String value) {
                               if (value.isEmpty) {
-                                return 'TITLE';
+                                return 'TITLE must not be empty';
                               }
                               return null;
                             },
@@ -102,7 +102,7 @@ class HomeLayout extends StatelessWidget {
                             controller: dateController,
                             validate: (String value) {
                               if (value.isEmpty) {
-                                return 'Date';
+                                return 'Date must not be empty';
                               }
                               return null;
                             },
@@ -132,7 +132,7 @@ class HomeLayout extends StatelessWidget {
                             controller: timeController,
                             validate: (String value) {
                               if (value.isEmpty) {
-                                return 'Time';
+                                return 'Time must not be empty';
                               }
                               return null;
                             },
