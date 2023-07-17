@@ -31,7 +31,7 @@ class AppCubit extends Cubit<AppStates>{
     'Archived Tasks',
   ];
 
-  Database database;
+  Database? database;
 
   void changeIndex(int index){
     currentIndex = index;
@@ -65,16 +65,15 @@ class AppCubit extends Cubit<AppStates>{
     });
   }
 
-   insertToDataBase(
+    insertToDataBase(
       {
-        @required String title,
-        @required String time,
-        @required String date,
+        required String title,
+        required String time,
+        required String date,
 
       }) async {
-    await database.transaction(
-          (txn) {
-        txn.rawInsert(
+    await database!.transaction(
+          (txn) => txn.rawInsert(
             'INSERT INTO Tasks (name,date,time,status) VALUES ("$title","$date","$time","New")')
             .then((value) {
           print(' $value Insert Successfully');
@@ -82,10 +81,7 @@ class AppCubit extends Cubit<AppStates>{
           getDataFromDatabase(database);
         }).catchError((error) {
           print('Error when Inserting to Database ${error.toString()}');
-        });
-
-        return null;
-      },
+        }),
     );
   }
 
@@ -111,8 +107,8 @@ class AppCubit extends Cubit<AppStates>{
   }
 
   void ChangeBottomSheetState({
-    @required bool isShow,
-    @required IconData icon,
+    required bool isShow,
+    required IconData icon,
 }){
     isBottomSheetShown = isShow;
     fabIcon =icon;
@@ -121,9 +117,9 @@ class AppCubit extends Cubit<AppStates>{
   }
 
   void deleteData({
-    @required int id,
+    required int id,
   }) async{
-    database.rawDelete('DELETE FROM Tasks WHERE id = ?', [id]).then((value) {
+    database!.rawDelete('DELETE FROM Tasks WHERE id = ?', [id]).then((value) {
 
       getDataFromDatabase(database);
       emit(AppDeleteDataFromDatabaseState());
@@ -133,10 +129,10 @@ class AppCubit extends Cubit<AppStates>{
   }
 
   void updateData({
-    @required String status,
-    @required int id,
+    required String status,
+    required int id,
 }) async {
-     database.rawUpdate(
+     database!.rawUpdate(
         'UPDATE Tasks SET status = ? WHERE id = ?',
         [ '$status','$id'],).then((value)
      {
@@ -150,7 +146,7 @@ class AppCubit extends Cubit<AppStates>{
   bool isDark = false;
 
   changeThemeMode({
-    bool modeFromShared,
+    bool? modeFromShared,
   }) {
     if (modeFromShared != null) {
       isDark = modeFromShared;

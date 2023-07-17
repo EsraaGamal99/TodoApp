@@ -14,14 +14,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   await CacheHelper.init();
-  bool isDark = CacheHelper.getBoolean(key: 'isDark');
+  bool? isDark = CacheHelper.getBoolean(key: 'isDark');
 
   runApp( MyApp(isDark: isDark,));
 
 }
 
 class MyApp extends StatelessWidget {
-  final bool isDark ;
+  final bool? isDark ;
 
   MyApp({this.isDark});
 

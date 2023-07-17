@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-const Color defaultColor = Colors.teal;
+const MaterialColor defaultColor = Colors.teal;
 
 Color selectedItemColorForLightMode = Colors.red;
 
