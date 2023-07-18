@@ -8,8 +8,8 @@ import 'package:todo_app/shared/cubit/cubit.dart';
 import 'package:todo_app/shared/cubit/states.dart';
 
 class HomeLayout extends StatelessWidget {
-
-  var scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  //var scaffoldKey = GlobalKey<ScaffoldState>;
   var formKey = GlobalKey<FormState>();
 
   var timeController = TextEditingController();
@@ -23,7 +23,7 @@ class HomeLayout extends StatelessWidget {
       builder: (BuildContext context, AppStates state) {
         AppCubit cubit = AppCubit.get(context);
         return Scaffold(
-            key: scaffoldKey,
+          key: scaffoldKey,
             appBar: AppBar(
               title: Center(
                 child: Text(
@@ -64,7 +64,6 @@ class HomeLayout extends StatelessWidget {
           else {
             scaffoldKey.currentState!.showBottomSheet((context) =>
                   Container(
-
                     color: Colors.white,
                     padding: EdgeInsets.all(15.0,),
                     child: Form(
