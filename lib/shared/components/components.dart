@@ -1,4 +1,4 @@
-import 'package:conditional_builder/conditional_builder.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/shared/cubit/cubit.dart';
 
@@ -7,8 +7,8 @@ Widget defaultButton({
   Color backgroundColor = Colors.indigoAccent,
   double radius = 0.0,
   bool isUpperCase = true,
-   @required Function onPressed,
-  @required String text,
+  required Function onPressed,
+  required String text,
 }) =>
     Container(
       width: width,
@@ -32,18 +32,18 @@ Widget defaultButton({
     );
 
 Widget defaultTextFormField({
-  @required TextInputType keyboardType,
-  @required TextEditingController controller,
-  Function onFieldSubmitted,
-  Function onChanged,
+  required TextInputType keyboardType,
+  required TextEditingController controller,
+  Function(String)? onFieldSubmitted,
+  onChanged,
   bool isPassword = false,
-  @required Function validate,
-  @required String labelText,
-  @required IconData prefixIcon,
-  IconData suffixIcon,
-  Function suffixPressed,
-  String text,
-  Function onTap,
+  required String? Function(String?) validate,
+  required String labelText,
+  required IconData prefixIcon,
+  IconData? suffixIcon,
+  Function? suffixPressed,
+  String? text,
+  onTap,
 }) =>
     TextFormField(
       controller: controller,
@@ -59,7 +59,11 @@ Widget defaultTextFormField({
         prefixIcon: Icon(
           prefixIcon,
         ),
-        suffixIcon: suffixIcon!=null ? IconButton(icon: Icon(suffixIcon), onPressed: () { suffixPressed(); },) : null,
+        suffixIcon: suffixIcon!=null
+            ? IconButton(icon: Icon(suffixIcon),
+          onPressed: () {
+              suffixPressed!();
+              },) : null,
         ),
     );
 
@@ -133,7 +137,7 @@ Widget buildTaskItem(Map model , context)=>
 
 Widget tasksBuilder(
 {
-  @required List<Map> tasks,
+  required List<Map> tasks,
 }
     ) => ConditionalBuilder(
   condition: tasks.length > 0,

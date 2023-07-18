@@ -1,12 +1,7 @@
-import 'package:conditional_builder/conditional_builder.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:todo_app/shared/components/constants.dart';
-import 'package:todo_app/modules/archived_tasks.dart';
-import 'package:todo_app/modules/done_tasks.dart';
-import 'package:todo_app/modules/new_tasks.dart';
 import 'package:todo_app/shared/components/components.dart';
 import 'package:todo_app/shared/cubit/cubit.dart';
 import 'package:todo_app/shared/cubit/states.dart';
@@ -49,7 +44,7 @@ class HomeLayout extends StatelessWidget {
               onPressed: ()
           {
             if (cubit.isBottomSheetShown) {
-              if (formKey.currentState.validate()) {
+              if (formKey.currentState!.validate()) {
                 cubit.insertToDataBase(
                   title: titleController.text,
                   date: dateController.text,
@@ -62,7 +57,7 @@ class HomeLayout extends StatelessWidget {
               }
             }
             else {
-              scaffoldKey.currentState.showBottomSheet((context) =>
+              scaffoldKey.currentState!.showBottomSheet((context) =>
                     Container(
                       color: Colors.white,
                       padding: EdgeInsets.all(15.0,),
@@ -76,8 +71,8 @@ class HomeLayout extends StatelessWidget {
                             defaultTextFormField(
                               keyboardType: TextInputType.text,
                               controller: titleController,
-                              validate: (String value) {
-                                if (value.isEmpty) {
+                              validate: (String? value) {
+                                if (value!.isEmpty) {
                                   return 'TITLE';
                                 }
                                 return null;
@@ -94,8 +89,8 @@ class HomeLayout extends StatelessWidget {
                             defaultTextFormField(
                               keyboardType: TextInputType.text,
                               controller: dateController,
-                              validate: (String value) {
-                                if (value.isEmpty) {
+                              validate: (String? value) {
+                                if (value!.isEmpty) {
                                   return 'Date';
                                 }
                                 return null;
@@ -110,7 +105,7 @@ class HomeLayout extends StatelessWidget {
                                   lastDate: DateTime.parse('2025-12-30'),
                                 ).then((value) {
                                   dateController.text =
-                                      DateFormat.yMMMd().format(value);
+                                      DateFormat.yMMMd().format(value!);
                                   print(DateFormat.yMMMd().format(value));
                                 });
                               },
@@ -124,8 +119,8 @@ class HomeLayout extends StatelessWidget {
                             defaultTextFormField(
                               keyboardType: TextInputType.text,
                               controller: timeController,
-                              validate: (String value) {
-                                if (value.isEmpty) {
+                              validate: (String? value) {
+                                if (value!.isEmpty) {
                                   return 'Time';
                                 }
                                 return null;
@@ -136,7 +131,7 @@ class HomeLayout extends StatelessWidget {
                                   initialTime: TimeOfDay.now(),
                                 ).then((value) {
                                   timeController.text =
-                                      (value.format(context)).toString();
+                                      (value!.format(context)).toString();
                                   print(value.format(context));
                                 });
                               },
