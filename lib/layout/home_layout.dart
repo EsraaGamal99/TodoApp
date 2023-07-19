@@ -34,6 +34,11 @@ class HomeLayout extends StatelessWidget {
                     ),
                   ),
                 ),
+                actions: [
+                  IconButton(onPressed: (){
+                    AppCubit.get(context).changeThemeMode();
+                  }, icon: Icon(Icons.brightness_4_outlined,),),
+                ],
               ),
               body: ConditionalBuilder(
                 condition: state != AppGetDatabaseLoadingState(),
