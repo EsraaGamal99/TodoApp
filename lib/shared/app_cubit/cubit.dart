@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:todo_app/shared/cubit/states.dart';
+import 'package:todo_app/shared/app_cubit/states.dart';
 
 import '../../modules/archived_tasks.dart';
 import '../../modules/done_tasks.dart';
@@ -31,7 +31,7 @@ class AppCubit extends Cubit<AppStates>{
     'Archived Tasks',
   ];
 
-  Database? database;
+   Database? database;
 
   void changeIndex(int index){
     currentIndex = index;
@@ -72,7 +72,7 @@ class AppCubit extends Cubit<AppStates>{
         required String date,
 
       }) async {
-    await database!.transaction(
+    await database?.transaction(
           (txn) => txn.rawInsert(
             'INSERT INTO Tasks (name,date,time,status) VALUES ("$title","$date","$time","New")')
             .then((value) {
@@ -119,7 +119,7 @@ class AppCubit extends Cubit<AppStates>{
   void deleteData({
     required int id,
   }) async{
-    database!.rawDelete('DELETE FROM Tasks WHERE id = ?', [id]).then((value) {
+    database?.rawDelete('DELETE FROM Tasks WHERE id = ?', [id]).then((value) {
 
       getDataFromDatabase(database);
       emit(AppDeleteDataFromDatabaseState());
@@ -132,7 +132,7 @@ class AppCubit extends Cubit<AppStates>{
     required String status,
     required int id,
 }) async {
-     database!.rawUpdate(
+     database?.rawUpdate(
         'UPDATE Tasks SET status = ? WHERE id = ?',
         [ '$status','$id'],).then((value)
      {
@@ -159,5 +159,6 @@ class AppCubit extends Cubit<AppStates>{
         emit(AppChangeMode());
       });
     }
+    print(' DARK MoDE IS $isDark');
   }
 }

@@ -32,6 +32,7 @@ dependencies:
   bloc: ^8.1.1
   shared_preferences: ^2.0.5
   flutter_bloc: ^8.1.1
+  hexcolor:
   conditional_builder_null_safety:
   sqflite:
   flutter:

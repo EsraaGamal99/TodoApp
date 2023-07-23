@@ -1,6 +1,8 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/shared/cubit/cubit.dart';
+import 'package:todo_app/cubit/cubit.dart';
+import 'package:todo_app/shared/app_cubit/cubit.dart';
+import 'package:todo_app/styles/colors.dart';
 
 Widget defaultButton({
   double width = double.infinity,
@@ -114,7 +116,7 @@ Widget buildTaskItem(Map model , context)=>
           AppCubit.get(context).updateData(status: 'done', id: model['id'],);},
             icon: Icon(
           Icons.check_circle,
-          color: Colors.teal,
+          color: FirstCubit.get(context).isDark?defaultColoForDarkModer:defaultColoForLightModer,
 
         )
         ),

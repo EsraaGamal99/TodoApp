@@ -2,9 +2,12 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_app/cubit/cubit.dart';
 import 'package:todo_app/shared/components/components.dart';
-import 'package:todo_app/shared/cubit/cubit.dart';
-import 'package:todo_app/shared/cubit/states.dart';
+import 'package:todo_app/shared/components/constants.dart';
+
+import '../shared/app_cubit/cubit.dart';
+import '../shared/app_cubit/states.dart';
 
 class HomeLayout extends StatelessWidget {
 
@@ -36,8 +39,14 @@ class HomeLayout extends StatelessWidget {
                 ),
                 actions: [
                   IconButton(onPressed: (){
-                    AppCubit.get(context).changeThemeMode();
-                  }, icon: Icon(Icons.brightness_4_outlined,),),
+                    FirstCubit.get(context).changeThemeMode();
+                    darkMode = !darkMode;
+                    print(darkMode);
+                   // AppCubit.get(context).changeThemeMode();
+                    //print(AppCubit.get(context).isDark);
+                  }
+                    , icon: FirstCubit.get(context).isDark?Icon(Icons.brightness_4_outlined,):Icon(Icons.brightness_4),
+                      color: FirstCubit.get(context).isDark? Colors.grey : Colors.teal, ),
                 ],
               ),
               body: ConditionalBuilder(
@@ -49,7 +58,8 @@ class HomeLayout extends StatelessWidget {
               onPressed: ()
           {
             if (cubit.isBottomSheetShown) {
-              if (formKey.currentState!.validate()) {
+              if(formKey.currentState!=null)
+                if (formKey.currentState!.validate()) {
                 cubit.insertToDataBase(
                   title: titleController.text,
                   date: dateController.text,
@@ -64,86 +74,88 @@ class HomeLayout extends StatelessWidget {
             else {
               scaffoldKey.currentState!.showBottomSheet((context) =>
                     Container(
-                      color: Colors.white,
+                      color: FirstCubit.get(context).isDark? Colors.grey : Colors.white,
                       padding: EdgeInsets.all(15.0,),
                       child: Form(
                         key: formKey,
-                        child: Column(
+                        child: SingleChildScrollView(
+                          child: Column(
 
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            // Title Field
-                            defaultTextFormField(
-                              keyboardType: TextInputType.text,
-                              controller: titleController,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'TITLE';
-                                }
-                                return null;
-                              },
-                              labelText: 'Title',
-                              prefixIcon: Icons.title,
-                            ),
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Title Field
+                              defaultTextFormField(
+                                keyboardType: TextInputType.text,
+                                controller: titleController,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'TITLE';
+                                  }
+                                  return null;
+                                },
+                                labelText: 'Title',
+                                prefixIcon: Icons.title,
+                              ),
 
-                            SizedBox(
-                              height: 15.0,
-                            ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
 
-                            // Date Field
-                            defaultTextFormField(
-                              keyboardType: TextInputType.text,
-                              controller: dateController,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'Date';
-                                }
-                                return null;
-                              },
-                              labelText: 'Date',
-                              prefixIcon: Icons.calendar_month_outlined,
-                              onTap: () {
-                                showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime.parse('2025-12-30'),
-                                ).then((value) {
-                                  dateController.text =
-                                      DateFormat.yMMMd().format(value!);
-                                  print(DateFormat.yMMMd().format(value));
-                                });
-                              },
-                            ),
+                              // Date Field
+                              defaultTextFormField(
+                                keyboardType: TextInputType.text,
+                                controller: dateController,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'Date';
+                                  }
+                                  return null;
+                                },
+                                labelText: 'Date',
+                                prefixIcon: Icons.calendar_month_outlined,
+                                onTap: () {
+                                  showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime.parse('2025-12-30'),
+                                  ).then((value) {
+                                    dateController.text =
+                                        DateFormat.yMMMd().format(value!);
+                                    print(DateFormat.yMMMd().format(value));
+                                  });
+                                },
+                              ),
 
-                            SizedBox(
-                              height: 15.0,
-                            ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
 
-                            // Time Field
-                            defaultTextFormField(
-                              keyboardType: TextInputType.text,
-                              controller: timeController,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'Time';
-                                }
-                                return null;
-                              },
-                              onTap: () {
-                                showTimePicker(
-                                  context: context,
-                                  initialTime: TimeOfDay.now(),
-                                ).then((value) {
-                                  timeController.text =
-                                      (value!.format(context)).toString();
-                                  print(value.format(context));
-                                });
-                              },
-                              labelText: 'Time',
-                              prefixIcon: Icons.access_time_filled,
-                            ),
-                          ],
+                              // Time Field
+                              defaultTextFormField(
+                                keyboardType: TextInputType.text,
+                                controller: timeController,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'Time';
+                                  }
+                                  return null;
+                                },
+                                onTap: () {
+                                  showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now(),
+                                  ).then((value) {
+                                    timeController.text =
+                                        (value!.format(context)).toString();
+                                    print(value.format(context));
+                                  });
+                                },
+                                labelText: 'Time',
+                                prefixIcon: Icons.access_time_filled,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
