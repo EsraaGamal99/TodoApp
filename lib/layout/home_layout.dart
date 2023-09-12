@@ -68,6 +68,8 @@ class HomeLayout extends StatelessWidget {
                   Navigator.pop(context);
                   cubit.isBottomSheetShown = false;
                   cubit.fabIcon = Icons.edit;
+
+
                 });
               }
             }
@@ -162,6 +164,9 @@ class HomeLayout extends StatelessWidget {
                 elevation: 15.0,
               ).closed.then((value) {
                     cubit.ChangeBottomSheetState(isShow: false, icon: Icons.edit);
+                    clearText(controller: titleController,);
+                    clearText(controller: dateController,);
+                    clearText(controller: timeController,);
               });
               cubit.ChangeBottomSheetState(isShow: true, icon: Icons.add);
             }

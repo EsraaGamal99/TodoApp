@@ -14,21 +14,21 @@ Future<void> main() async {
   await CacheHelper.init();
   bool? isDark = CacheHelper.getBoolean(key: 'isDark');
 
-  runApp( MyApp(isDark!));
+  runApp( MyApp());
 
 }
 
 class MyApp extends StatelessWidget {
-  final bool isDark;
 
-  MyApp(this.isDark);
+
+  MyApp();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return
          BlocProvider(
-           create: (context) => FirstCubit()..changeThemeMode(modeFromShared: isDark,),
+           create: (context) => FirstCubit()..changeThemeMode(),
            child: BlocConsumer<FirstCubit,FirstStates>(
              listener: (context, state) {},
              builder: (context, state) {
